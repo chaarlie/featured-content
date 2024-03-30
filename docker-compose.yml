@@ -1,0 +1,56 @@
+version: "3.8"
+services:
+  node-api:
+      container_name:  node-api
+      restart: always
+      build:
+        context: ./featured-content-api
+      image:  node-api
+      ports:
+      - $BACKEND_PORT:$BACKEND_PORT 
+      - $TRANSLATION_SERVICE_HOST:$TRANSLATION_SERVICE_HOST 
+      - $TRANSLATION_SERVICE_PORT:$TRANSLATION_SERVICE_PORT
+      environment:
+        - TRANSLATION_PORT=$TRANSLATION_PORT
+      depends_on:
+      - libretranslate
+  front-end:
+    container_name: frontend-webapp
+    restart: always
+    build:
+      context: ./featured-content-frontend
+    image: web-app
+    ports:
+      - $CLIENT_PORT:$CLIENT_PORT 
+    environment:
+      - REACT_APP_API_URL=$REACT_APP_API_URL
+    depends_on:
+      - node-api
+    networks:
+      - app-network
+
+  libretranslate:
+    container_name: libretranslate
+    image: libretranslate/libretranslate:latest
+    restart: unless-stopped
+    ports:
+      - 5000:5000
+    healthcheck:
+      test: ['CMD-SHELL', './venv/bin/python scripts/healthcheck.py']
+    tty: true
+    environment:
+      LT_LOAD_ONLY: en,de,es
+      LT_FRONTEND_LANGUAGE_SOURCE: 'auto'
+      LT_FRONTEND_LANGUAGE_TARGET: 'en'
+      LT_SUGGESTIONS: true
+      LT_DEBUG: true
+    volumes:
+      - ./data/argos-translate:/home/libretranslate/.local/share/argos-translate
+    networks:
+      - app-network
+ 
+networks:
+  app-network:
+volumes:
+  uploads: {}
+  data: {}
