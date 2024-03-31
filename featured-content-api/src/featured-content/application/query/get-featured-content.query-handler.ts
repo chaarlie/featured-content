@@ -18,6 +18,8 @@ export class GetFeaturedContentQueryHandler implements IQueryHandler {
   async execute(
     query: GetFeaturedContentQuery,
   ): Promise<FeaturedContentImpl[]> {
+    const generatedIds: string[] = [];
+    
     const paths = Array.from({ length: query.qty }).map((_val, i) => {
       const { year, month, day, language } = query;
       const dateString = `${year}/${month}/${day}`;
@@ -26,14 +28,12 @@ export class GetFeaturedContentQueryHandler implements IQueryHandler {
 
       date.add(i + 1, 'days');
 
-      const formattedDate = date.format('YYYY/MM/DD');
+      const formattedDate = date.format('YYYY/MM/DD');  
+
+      generatedIds[i] =  createHash('sha256').update(JSON.stringify({...query, formattedDate: formattedDate.replace(/\//g, '')})).digest('hex')
 
       return `${language}/featured/${formattedDate}`;
     });
-
-    const generatedIds = Array.from({ length: query.qty }).map((_val, i) =>
-      createHash('sha256').update(JSON.stringify(query)).digest('hex'),
-    );
 
     const result = await this.proxyWikiMediaRequest.getMany(paths);
 
