@@ -6,7 +6,7 @@ export interface ProxyWikimediaRequest {
   getMany: (contentData: string[]) => Promise<any[]>;
 }
 
-class ProxyWikimediaRequestImpl implements ProxyWikimediaRequest {
+export class ProxyWikimediaRequestImpl implements ProxyWikimediaRequest {
   async getMany(contentData: string[]): Promise<any[]> {
     const REQ_URL = 'https://api.wikimedia.org/feed/v1/wikipedia';
 
