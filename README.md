@@ -1,12 +1,15 @@
-Sample Wiki Media content Proxy.
+## Hi there!
+
+This is sample API serving as a proxy for the Wikimedia Content Api.
 
 Key height lights:
 
-1. Implements CQRS
-1. Promotes code reuse modules
-1. Exhibits good NestJS best practices
+1. Implements CQRS in NestJS
+1. Implements Libretranslate API
+1. Promotes code reuse through lib modules
 
 ## Instructions to RUN
 
-1. Edit the **.env** file accordingly 
-1. run npm start in both directories
+1. Edit the **.env.example** file accordingly to your environment ports/hosts configuration or leave it as it is. Then rename it to **.env**
+1. In the terminal do `docker compose up`
+1. If using the default configuration please go to http://localhost:3000
