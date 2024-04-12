@@ -28,6 +28,10 @@ function FeaturedContentContainer() {
 
   useEffect(() => {
     if (formattedDate) {
+      if (featuredContentList.length > 0) {
+        setFeaturedContentList([]);
+      }
+
       const REQ_URL = `${process.env.REACT_APP_API_URL}/feed/en/${formattedDate}?qty=5`;
 
       axios.get<any[]>(REQ_URL).then((response) => {
@@ -80,9 +84,9 @@ function FeaturedContentContainer() {
                 />
               );
             })
-          ) : (
+          ) : formattedDate ? (
             <p>Loading...</p>
-          )}
+          ) : null}
         </div>
       </div>
       <FeaturedContentNextElementContainer />
