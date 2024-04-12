@@ -47,7 +47,7 @@ function FeaturedContentContainer() {
                   ? content.featuredArticle?.thumbnail
                   : IMAGE_NOT_FOUND;
 
-                resolve(image);
+                image.onload = () => resolve(image);
               });
             })
           ).then((loadedImages) => {
