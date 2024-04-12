@@ -5,11 +5,11 @@ function FeaturedContentDateSelection({setCurrentDate}: {setCurrentDate: (value:
     <div className="  flex gap-5 mx-auto">
       <input
         onChange={(e)=> {setCurrentDate(e.target.value)}}
-        className="outline outline-offset-2 p-5 outline-sky-600 font-bold uppercase"
+        className="outline outline-offset-2 p-2 outline-shade-3 rounded font-bold uppercase"
         type="date"
       />
       <div>
-        <button className="bg-sky-500  font-bold p-5 hover:bg-sky-600 col-span-1 rounded-lg   text-white  hover:text-slate-50 text-lg">
+        <button className="bg-primary-1 text-primary-2 font-bold p-5 hover:bg-primary-3 hover:scale-95 col-span-1 rounded-lg  hover:text-shade-1 text-lg">
           Go
         </button>
       </div>

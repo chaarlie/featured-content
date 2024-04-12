@@ -60,11 +60,11 @@ function FeaturedContentContainer() {
     }
   }, [formattedDate]);
   return (
-    <section className="col-span-2 flex flex-col  bg-slate-400 p-10">
+    <section className="bg-primary-2 drop-shadow-lg  col-span-2 flex flex-col   p-10">
       <FeaturedContentDateSelection setCurrentDate={setCurrentDate} />
 
-      <div className="  h-1/2 overflow-scroll gap-4 mt-10">
-        <div className="grid grid-rows-5 grid-flow-col gap-3">
+      <div className="h-1/2 overflow-scroll gap-4 mt-10">
+        <div className="grid grid-rows-5 grid-flow-col gap-10">
           {featuredContentList.length > 0 ? (
             featuredContentList.map((content) => {
               if (!content.featuredArticle) return null;

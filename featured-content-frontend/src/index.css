@@ -2,19 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+:root {
+  --primary-1: #36c;
+  --primary-2: #fff;
+  --primary-3: #2f5bb3;
 
+  --accent-1: #202122;
+  --accent-2: #f8f9fa;
+  --accent-3: #cddeff;
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --shade-1: #F9F9F9;
+  --shade-2: #F5F7F7;
+  --shade-3: #ecf0f0;
+  --shade-4: #a2a9b1;
+  --shade-5: #72777d;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+ol.current-date-custom-list {
+  list-style: none;
+  counter-reset: item;
 }
+li.current-date-custom-list-item {
+  counter-increment: item;
+  margin-bottom: 5px;
+}
+li.current-date-custom-list-item:before {
+  
+  margin-right: 10px;
+  content: counter(item);
+  background: var(--shade-2);
+  border-radius: 100%;
+  color: var(--accent-1);
+  width: 1.6em;
+  text-align: center;
+  display: inline-block;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap");

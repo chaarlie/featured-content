@@ -7,7 +7,7 @@ function FeaturedContentNextElementContainer() {
     <div className="w-full"></div>
     <div className=" w-full">
       <div className="flex justify-end">
-        <a href="#" className="text-sky-600/90">&#10230;</a>
+        <a href="#" className="text-sky">&#10230;</a>
       </div>
     </div>
   </div>
