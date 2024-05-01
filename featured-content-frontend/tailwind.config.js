@@ -30,16 +30,17 @@ module.exports = {
       colors: {
         'primary-1': 'var(--primary-1)',
         'primary-2': 'var(--primary-2)',
-        'primary-3': 'var(--primary-3)',
-        
+
         'accent-1': 'var(--accent-1)',
         'accent-2': 'var(--accent-2)',
         'accent-3': 'var(--accent-3)',
-
+        
         'shade-1': 'var(--shade-1)',
         'shade-2': 'var(--shade-2)',
         'shade-3': 'var(--shade-3)',
         'shade-4': 'var(--shade-4)',
+        'shade-5': 'var(--shade-5)',
+        'shade-6': 'var(--shade-6)',
       }
     },
   },

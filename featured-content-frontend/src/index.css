@@ -5,17 +5,17 @@
 :root {
   --primary-1: #36c;
   --primary-2: #fff;
-  --primary-3: #2f5bb3;
-
+  
   --accent-1: #202122;
   --accent-2: #f8f9fa;
   --accent-3: #cddeff;
 
   --shade-1: #F9F9F9;
-  --shade-2: #F5F7F7;
+  --shade-2: #f1f3f3;
   --shade-3: #ecf0f0;
   --shade-4: #a2a9b1;
   --shade-5: #72777d;
+  --shade-6: #2f5bb3;
 }
 
 ol.current-date-custom-list {
