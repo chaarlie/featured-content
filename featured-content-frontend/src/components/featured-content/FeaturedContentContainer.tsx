@@ -64,32 +64,55 @@ function FeaturedContentContainer() {
     }
   }, [formattedDate]);
   return (
-    <section className="bg-primary-2 drop-shadow-lg  col-span-2 flex flex-col   p-10">
-      <FeaturedContentDateSelection setCurrentDate={setCurrentDate} />
+    <section className="bg-primary-2 drop-shadow-lg  col-span-2 grid grid-rows-6 p-10 h-[calc(100%-3rem)] ">
+      <div className="row-start-1 row-end-2 grid grid-cols-2   bg-shade-2 p-5 rounded ">
+        <FeaturedContentDateSelection setCurrentDate={setCurrentDate} />
 
-      <div className="h-1/2 overflow-scroll gap-4 mt-10">
-        <div className="grid grid-rows-5 grid-flow-col gap-10">
-          {featuredContentList.length > 0 ? (
-            featuredContentList.map((content) => {
-              if (!content.featuredArticle) return null;
+        <div className="rounded flex bg-shade-1 round">
+          <div className="grid grid-cols-5 w-11/12">
+            <div className="bg-black col-span-3 w-full">sdfsd</div>
+            <div className="bg-primary-2 inset-0 p-0  flex justify-center items-center col-span-2">
+              <div className="border-b-2 border-shade-2">
+                <span className="text-4xl inline-block capitalize ">es</span>
+              </div>
+            </div>
+          </div>
 
-              const { featuredArticle } = content;
-
-              return (
-                <FeaturedContentCard
-                  key={content.id}
-                  title={featuredArticle.title}
-                  img={featuredArticle.thumbnail || IMAGE_NOT_FOUND}
-                  content={featuredArticle.description}
-                />
-              );
-            })
-          ) : formattedDate ? (
-            <p>Loading...</p>
-          ) : null}
+          <div className="flex justify-center items-center w-5 p-2">
+            <div className="grid grid-rows-3  text-accent-1 ">
+              <div className="cursor-pointer"> &#8593;</div>
+              <div className="row-start-3 cursor-pointer"> &#8595; </div>
+            </div>
+          </div>
         </div>
       </div>
-      <FeaturedContentNextElementContainer />
+
+      <div className="row-start-3 row-end-6">
+        <div className="flex flex-col gap-3">
+          <div className="overflow-auto grid grid-cols-3 grid-flow-row gap-10 bg-shade-2 p-4 rounded auto-rows-max w-full min-h-96 max-h-96 ">
+            {featuredContentList.length > 0 ? (
+              featuredContentList.map((content) => {
+                if (!content.featuredArticle) return null;
+
+                const { featuredArticle } = content;
+
+                return (
+                  <FeaturedContentCard
+                    key={content.id}
+                    title={featuredArticle.title}
+                    img={featuredArticle.thumbnail || IMAGE_NOT_FOUND}
+                    content={featuredArticle.description}
+                  />
+                );
+              })
+            ) : formattedDate ? (
+              <p>Loading...</p>
+            ) : null}
+          </div>
+
+          <FeaturedContentNextElementContainer />
+        </div>
+      </div>
     </section>
   );
 }

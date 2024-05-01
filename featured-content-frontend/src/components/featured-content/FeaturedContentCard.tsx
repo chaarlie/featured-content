@@ -10,22 +10,23 @@ function FeaturedContentCard({
   img,
 }: FeaturedContentCardInterface) {
   return (
-    <div className="row-span-1 grid grid-cols-5 gap-8">
-      <div className="col-span-2 h-40 overflow-auto">
-        <div className="  ">
-          <img className="object-cover" src={img} />
-        </div>
-      </div>
-
-      <div className="flex-col h-40   col-span-3  overflow-auto text-ellipsis  ">
-        <div>
-          <h3 className="  uppercase font-bold ">{title}</h3>
-        </div>
-        <div className="mt-3">
-          <p className="text-justify ">{content}</p>
+    <>
+    <div className="col-span-1">
+      <div className="flex items-center h-full">
+        <div className="bg-slate-300">
+          <img className="object-cover h-36 w-96" src={img} />
         </div>
       </div>
     </div>
+    <div className="col-span-2  overflow-auto text-ellipsis  bg-white p-4 pr-6 border-l-8 border-shade-4 rounded-md shadow-md ">
+      <div>
+        <h3 className="uppercase font-bold ">{title}</h3>
+      </div>
+      <div className="mt-3">
+        <p className="text-justify">{content}</p>
+      </div>
+    </div>
+  </>
   );
 }
 

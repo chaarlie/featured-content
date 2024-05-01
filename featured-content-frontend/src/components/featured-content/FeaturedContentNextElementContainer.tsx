@@ -1,17 +1,15 @@
-import React from 'react'
+import React from "react";
 
 function FeaturedContentNextElementContainer() {
   return (
-   
-    <div className="grid grid-cols-2  text-4xl  font-bold mt-10">
-    <div className="w-full"></div>
-    <div className=" w-full">
+    <div className="text-black text-4xl font-bold">
       <div className="flex justify-end">
-        <a href="#" className="text-sky">&#10230;</a>
+        <a href="#" className="text-sky">
+          &#10230;
+        </a>
       </div>
     </div>
-  </div>
-  )
+  );
 }
 
-export default FeaturedContentNextElementContainer
+export default FeaturedContentNextElementContainer;
