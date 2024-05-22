@@ -45,8 +45,6 @@ function FeaturedContentContainer({
  useMemo(() =>    countryFlags.map(({ url }) => url), [countryFlags])
   );
 
-  console.log('i reload')
-
   const shouldSubmitForm = formattedDate && currentFlag && itemQty > 0
 
   const { data: featuredContentEventData } =
@@ -84,9 +82,7 @@ function FeaturedContentContainer({
 
       const isLangEnglish = currentFlag?.key === "en";
 
-      const REQ_URL = `${process.env.REACT_APP_API_URL}/feed/en/${
-        isLangEnglish ? "" : `${currentFlag.key}/`
-      }${formattedDate}?qty=${itemQty}`;
+      const REQ_URL = isLangEnglish? `${process.env.REACT_APP_API_URL}/feed/en/${formattedDate}?qty=${itemQty}` : `${process.env.REACT_APP_API_URL}/feed/translate/en/${currentFlag.key}/${formattedDate}?qty=${itemQty}`
 
       axios.get<any[]>(REQ_URL);
     }
