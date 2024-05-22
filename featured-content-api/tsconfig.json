@@ -24,12 +24,6 @@
       "@app/dto/*": [
         "libs/dto/src/*"
       ],
-      "@app/libretranslate-manager": [
-        "libs/libretranslate-manager/src"
-      ],
-      "@app/libretranslate-manager/*": [
-        "libs/libretranslate-manager/src/*"
-      ],
       "@app/proxy-wikimedia-request": [
         "libs/proxy-wikimedia-request/src"
       ],
