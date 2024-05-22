@@ -19,7 +19,6 @@ export const useLoadedImages = (urls: string[]) => {
       }
     });
   }, [urls]);
-
   return {
     hasLoadedImages,
   };
