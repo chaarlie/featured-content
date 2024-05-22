@@ -1,8 +1,86 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src",
+  "sourceRoot": "apps/featured-content-api/src",
   "compilerOptions": {
-    "deleteOutDir": true
-  }
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/featured-content-api/tsconfig.app.json"
+  },
+  "projects": {
+    "featured-content-api": {
+      "type": "application",
+      "root": "apps/featured-content-api",
+      "entryFile": "main",
+      "sourceRoot": "apps/featured-content-api/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/featured-content-api/tsconfig.app.json"
+      }
+    },
+    "api-gateway": {
+      "type": "application",
+      "root": "apps/api-gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/api-gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
+      }
+    },
+    "featured-content": {
+      "type": "application",
+      "root": "apps/featured-content",
+      "entryFile": "main",
+      "sourceRoot": "apps/featured-content/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/featured-content/tsconfig.app.json"
+      }
+    },
+    "dto": {
+      "type": "library",
+      "root": "libs/dto",
+      "entryFile": "index",
+      "sourceRoot": "libs/dto/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/dto/tsconfig.lib.json"
+      }
+    },
+    "libretranslate-manager": {
+      "type": "library",
+      "root": "libs/libretranslate-manager",
+      "entryFile": "index",
+      "sourceRoot": "libs/libretranslate-manager/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/libretranslate-manager/tsconfig.lib.json"
+      }
+    },
+    "proxy-wikimedia-request": {
+      "type": "library",
+      "root": "libs/proxy-wikimedia-request",
+      "entryFile": "index",
+      "sourceRoot": "libs/proxy-wikimedia-request/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/proxy-wikimedia-request/tsconfig.lib.json"
+      }
+    },
+    "rmq-env-config": {
+      "type": "library",
+      "root": "libs/rmq-env-config",
+      "entryFile": "index",
+      "sourceRoot": "libs/rmq-env-config/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/rmq-env-config/tsconfig.lib.json"
+      }
+    },
+    "translation": {
+      "type": "application",
+      "root": "apps/translation",
+      "entryFile": "main",
+      "sourceRoot": "apps/translation/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/translation/tsconfig.app.json"
+      }
+    }
+  },
+  "monorepo": true,
+  "root": "apps/featured-content-api"
 }
