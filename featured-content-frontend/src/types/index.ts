@@ -23,10 +23,15 @@ export type MostRead =  {
     articles: MostReadArticle[]
 }
 
+export type ContentLang = {
+    url: string, 
+    key: string
+}
+
 export interface FeaturedContent {
     readonly id: string
-    featuredArticle: FeaturedArticle
-    featuredImage: FeaturedImage
-    mostRead: MostRead
+    featuredArticle?: FeaturedArticle
+    featuredImage?: FeaturedImage
+    mostRead?: MostRead
 
 }

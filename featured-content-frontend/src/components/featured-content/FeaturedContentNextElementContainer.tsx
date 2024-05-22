@@ -2,7 +2,7 @@ import React from "react";
 
 function FeaturedContentNextElementContainer() {
   return (
-    <div className="text-black text-4xl font-bold">
+    <div className="-mt-3 text-black text-4xl font-bold">
       <div className="flex justify-end">
         <a href="#" className="text-sky">
           &#10230;
