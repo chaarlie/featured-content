@@ -79,6 +79,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/translation/tsconfig.app.json"
       }
+    },
+    "payload": {
+      "type": "library",
+      "root": "libs/payload",
+      "entryFile": "index",
+      "sourceRoot": "libs/payload/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/payload/tsconfig.lib.json"
+      }
     }
   },
   "monorepo": true,

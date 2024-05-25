@@ -10,7 +10,7 @@ import {
   FeaturedContentResponse,
   FeaturedTranslatedContentRequest,
   TranslationRequest,
-} from '@app/dto';
+} from '@app/payload';
 import { QueryBus } from '@nestjs/cqrs';
 import { GetFeaturedContentQuery } from '../application/get-featured-content.query';
 import { TRANSLATION_SERVICE } from '../featured-content.module';
@@ -24,11 +24,6 @@ export class FeaturedContentController {
     private readonly featuredContentTranslatedService: ClientRMQ,
     private readonly queryBus: QueryBus,
   ) {}
-
-  @EventPattern('translate.json.content.response')
-  async translateJsonContentResponse(@Payload() payload: any) {
-    console.log(payload);
-  }
 
   @EventPattern('featured.content.request')
   async featuredContentProcessRequest(

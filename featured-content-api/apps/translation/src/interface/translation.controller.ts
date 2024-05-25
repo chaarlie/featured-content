@@ -2,7 +2,7 @@ import { Controller, Inject, forwardRef } from '@nestjs/common';
 import { ClientRMQ, EventPattern, Payload } from '@nestjs/microservices';
 import { QueryBus } from '@nestjs/cqrs';
 import { GetJsonTranslatedQuery } from '../application/get-json-translated.query';
-import { TranslationRequest } from '@app/dto';
+import { TranslationRequest } from '@app/payload';
 import { FEATURED_CONTENT_SERVICE } from '../translation.module';
 
 @Controller()

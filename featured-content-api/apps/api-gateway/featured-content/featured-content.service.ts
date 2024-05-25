@@ -1,8 +1,10 @@
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
-import { FeaturedContentRequest } from '@app/dto';
-import { FEATURED_CONTENT_SERVICE } from './featured-content.module';
 import { ClientRMQ } from '@nestjs/microservices';
-import { FeaturedTranslatedContentRequest } from '@app/dto';
+import {
+  FeaturedContentRequest,
+  FeaturedTranslatedContentRequest,
+} from '@app/payload';
+import { FEATURED_CONTENT_SERVICE } from './featured-content.module';
 
 @Injectable()
 export class FeaturedContentService {

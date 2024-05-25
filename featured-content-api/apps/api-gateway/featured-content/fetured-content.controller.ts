@@ -3,8 +3,8 @@ import { FeaturedContentService } from './featured-content.service';
 import {
   FeaturedContentRequest,
   FeaturedTranslatedContentRequest,
-  FeaturedContentResponse
-} from '@app/dto';
+  FeaturedContentResponse,
+} from '@app/payload';
 import { ContentDayParam } from './dto/content-day.param';
 import { ContentLanguageSourceParam } from './dto/content-language-source.param';
 import { ContentReqQtyQueryString } from './dto/content-req-qty.query-string';

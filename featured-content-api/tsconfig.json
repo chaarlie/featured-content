@@ -18,12 +18,6 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@app/dto": [
-        "libs/dto/src"
-      ],
-      "@app/dto/*": [
-        "libs/dto/src/*"
-      ],
       "@app/proxy-wikimedia-request": [
         "libs/proxy-wikimedia-request/src"
       ],
@@ -35,6 +29,12 @@
       ],
       "@app/rmq-env-config/*": [
         "libs/rmq-env-config/src/*"
+      ],
+      "@app/payload": [
+        "libs/payload/src"
+      ],
+      "@app/payload/*": [
+        "libs/payload/src/*"
       ]
     }
   }

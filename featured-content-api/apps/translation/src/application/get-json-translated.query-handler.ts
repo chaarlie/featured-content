@@ -3,7 +3,7 @@ import axios from 'axios';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 
 import { GetJsonTranslatedQuery } from './get-json-translated.query';
-import { FeaturedContentResponse } from '@app/dto';
+import { FeaturedContentResponse } from '@app/payload';
 
 @QueryHandler(GetJsonTranslatedQuery)
 export class GetJsonTranslatedQueryHandler implements IQueryHandler {
