@@ -1,15 +1,7 @@
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
-import {
-  FeaturedContentRequest,
-  FeaturedContentResponse,
-  TranslationResponse,
-} from '@app/dto';
-import { FEATURED_CONTENT_SERVICE } from './featured-content.module';
-import { ClientRMQ } from '@nestjs/microservices';
+import { Injectable } from '@nestjs/common';
+
 import { Subject } from 'rxjs/internal/Subject';
-import { FeaturedTranslatedContentRequest } from '../../../libs/dto/src/featured-translated-content-request';
 import { NotificationKeys } from './fetured-content.controller';
-import { Observable, firstValueFrom } from 'rxjs';
 
 export interface SSMessageEvent {
   data: string | object;

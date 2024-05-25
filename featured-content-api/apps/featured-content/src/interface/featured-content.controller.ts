@@ -14,7 +14,6 @@ import {
 import { QueryBus } from '@nestjs/cqrs';
 import { GetFeaturedContentQuery } from '../application/get-featured-content.query';
 import { TRANSLATION_SERVICE } from '../featured-content.module';
-import { TranslationResponse } from '../../../../libs/dto/src/translation-response';
 
 @Controller()
 export class FeaturedContentController {
@@ -67,20 +66,7 @@ export class FeaturedContentController {
   }
 
   @EventPattern('translation.response')
-  async translationResponse(@Payload() payload: string[]) {
-    const featuredContentResponseList = payload.map((el) => {
-      let parsed = {};
-      try {
-        parsed = JSON.parse(el);
-      } catch (error) {
-        console.error(error);
-      }
-      return parsed as FeaturedContentResponse;
-    });
-
-    this.apiGateWayService.emit(
-      'featured.content.translation.response',
-      featuredContentResponseList,
-    );
+  async translationResponse(@Payload() payload: FeaturedContentResponse[]) {
+    this.apiGateWayService.emit('featured.content.response', payload);
   }
 }

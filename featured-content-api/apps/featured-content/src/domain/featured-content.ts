@@ -180,12 +180,4 @@ export class FeaturedContentImpl
   private parseFeaturedImageDescription(ob: any) {
     return ob?.description?.text;
   }
-
-  toJSON() {
-    const ob = Object.assign({}, this);
-
-    // filter/delete properties here
-
-    return JSON.stringify(ob);
-  }
 }

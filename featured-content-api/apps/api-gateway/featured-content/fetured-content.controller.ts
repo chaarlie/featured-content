@@ -3,6 +3,7 @@ import { FeaturedContentService } from './featured-content.service';
 import {
   FeaturedContentRequest,
   FeaturedTranslatedContentRequest,
+  FeaturedContentResponse
 } from '@app/dto';
 import { ContentDayParam } from './dto/content-day.param';
 import { ContentLanguageSourceParam } from './dto/content-language-source.param';
@@ -10,7 +11,6 @@ import { ContentReqQtyQueryString } from './dto/content-req-qty.query-string';
 import { ContentYearParam } from './dto/content-year.param';
 import { ContentMonthParam } from './dto/content-month.param';
 import { EventPattern } from '@nestjs/microservices';
-import { FeaturedContentResponse, TranslationResponse } from '@app/dto';
 import { ContentLanguageTargetParam } from './dto/content-language-target.param';
 import { SseNotificationService } from './sse-notification.service';
 
@@ -79,15 +79,7 @@ export class FeaturedContentController {
   }
 
   @EventPattern('featured.content.response')
-  featuredContentSendContentResponse(payload: FeaturedContentResponse) {
-    this.sseNotificationService.setNotificationValue(
-      NotificationKeys.FEATURED_CONTENT,
-      payload,
-    );
-  }
-
-  @EventPattern('featured.content.translation.response')
-  featuredContentGetTranslationResponse(payload: FeaturedContentResponse[]) {
+  featuredContentSendContentResponse(payload: FeaturedContentResponse[]) {
     this.sseNotificationService.setNotificationValue(
       NotificationKeys.FEATURED_CONTENT,
       payload,

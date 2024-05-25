@@ -2,10 +2,13 @@ import { ModuleMetadata, Provider } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 
 import { GetFeaturedContentQueryHandler } from './get-featured-content.query-handler';
- 
+
 import { GetFeaturedContentQuery } from './get-featured-content.query';
 import { MOCKED_WIKIMEDIA_API_DATA } from './__mocks__/wikimedia.mock';
-import { PROXY_WIKIMEDIA_REQ, ProxyWikimediaRequest } from '../../../../libs/proxy-wikimedia-request/src/proxy-wikimedia-request.module';
+import {
+  PROXY_WIKIMEDIA_REQ,
+  ProxyWikimediaRequest,
+} from '../../../../libs/proxy-wikimedia-request/src/proxy-wikimedia-request.module';
 
 describe('GetFeaturedContentQueryHandler', () => {
   let handler: GetFeaturedContentQueryHandler;

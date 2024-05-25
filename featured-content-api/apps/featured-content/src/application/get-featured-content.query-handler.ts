@@ -1,4 +1,4 @@
-const { createHash } = require('crypto');
+import { createHash } from 'crypto';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 
 import { Inject } from '@nestjs/common';

@@ -1,7 +1,7 @@
-import { IEvent, IQuery } from '@nestjs/cqrs';
+import { IQuery } from '@nestjs/cqrs';
 
 export class GetJsonTranslatedQuery implements IQuery {
-  jsonOb: Object;
+  jsonObArray: object[];
   languageTarget: string;
 
   constructor(options: GetJsonTranslatedQuery) {

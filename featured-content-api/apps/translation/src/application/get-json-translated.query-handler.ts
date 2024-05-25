@@ -1,10 +1,9 @@
-const { createHash } = require('crypto');
+import axios from 'axios';
+
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 
 import { GetJsonTranslatedQuery } from './get-json-translated.query';
-
-import axios from 'axios';
-import { TranslationImpl } from '../domain/translation';
+import { FeaturedContentResponse } from '@app/dto';
 
 @QueryHandler(GetJsonTranslatedQuery)
 export class GetJsonTranslatedQueryHandler implements IQueryHandler {
@@ -66,12 +65,19 @@ export class GetJsonTranslatedQueryHandler implements IQueryHandler {
     return obCopy;
   }
 
-  async execute(query: GetJsonTranslatedQuery): Promise<TranslationImpl> {
-    const translatedOb = await this.translateObjectValues(
-      query.jsonOb,
-      query.languageTarget,
+  async execute(
+    query: GetJsonTranslatedQuery,
+  ): Promise<FeaturedContentResponse[]> {
+    const contentTranslationList = await Promise.all(
+      query.jsonObArray.map((el: any) => {
+        return this.translateObjectValues(el, query.languageTarget);
+      }),
     );
 
-    return new TranslationImpl({ jsonOb: translatedOb });
+    const contentTranslationListStringified = contentTranslationList.map(
+      (el) => el as FeaturedContentResponse,
+    );
+
+    return contentTranslationListStringified;
   }
 }

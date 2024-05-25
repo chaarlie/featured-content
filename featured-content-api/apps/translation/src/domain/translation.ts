@@ -1,5 +1,5 @@
 export type TranslationProperties = {
-  jsonOb: Object;
+  jsonOb: object;
 };
 
 export interface Translation {}
@@ -9,15 +9,5 @@ export class TranslationImpl implements Translation {
     this.jsonOb = properties.jsonOb;
   }
 
-  private jsonOb: Object;
-
-  toString() {
-    return JSON.stringify(this.jsonOb);
-  }
-
-  toJSON() {
-    const ob = Object.assign({}, this);
-
-    return JSON.stringify(ob);
-  }
+  private jsonOb: object;
 }

@@ -1,4 +1,4 @@
-import { IEvent, IQuery } from '@nestjs/cqrs';
+import { IQuery } from '@nestjs/cqrs';
 
 export class GetFeaturedContentQuery implements IQuery {
   language: string;
