@@ -87,7 +87,8 @@
       "^@app/libretranslate-manager(|/.*)$": "<rootDir>/libs/libretranslate-manager/src/$1",
       "^@app/proxy-wikimedia-request(|/.*)$": "<rootDir>/libs/proxy-wikimedia-request/src/$1",
       "^@app/rmq-env-config(|/.*)$": "<rootDir>/libs/rmq-env-config/src/$1",
-      "^@app/payload(|/.*)$": "<rootDir>/libs/payload/src/$1"
+      "^@app/payload(|/.*)$": "<rootDir>/libs/payload/src/$1",
+      "^@app/token(|/.*)$": "<rootDir>/libs/token/src/$1"
     }
   }
 }

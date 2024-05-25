@@ -13,19 +13,29 @@ import {
 } from '@app/payload';
 import { QueryBus } from '@nestjs/cqrs';
 import { GetFeaturedContentQuery } from '../application/get-featured-content.query';
-import { TRANSLATION_SERVICE } from '../featured-content.module';
+import {
+  API_GATEWAY_MICROSERVICE_CLIENT,
+  TRANSLATION_MICROSERVICE_CLIENT,
+} from '@app/token';
+import {
+  FEATURED_CONTENT_REQ_EVENT,
+  FEATURED_CONTENT_RES_EVENT,
+  FEATURED_CONTENT_TRANSLATION_REQ_EVENT,
+  TRANSLATION_REQ_EVENT,
+  TRANSLATION_RES_EVENT,
+} from '@app/token';
 
 @Controller()
 export class FeaturedContentController {
   constructor(
-    @Inject('API_GATEWAY')
-    private readonly apiGateWayService: ClientTCP,
-    @Inject(forwardRef(() => TRANSLATION_SERVICE))
-    private readonly featuredContentTranslatedService: ClientRMQ,
+    @Inject(API_GATEWAY_MICROSERVICE_CLIENT)
+    private readonly apiGatewayMicroserviceClient: ClientTCP,
+    @Inject(forwardRef(() => TRANSLATION_MICROSERVICE_CLIENT))
+    private readonly translationMicroserviceClient: ClientRMQ,
     private readonly queryBus: QueryBus,
   ) {}
 
-  @EventPattern('featured.content.request')
+  @EventPattern(FEATURED_CONTENT_REQ_EVENT)
   async featuredContentProcessRequest(
     @Payload() payload: FeaturedContentRequest,
   ) {
@@ -34,10 +44,13 @@ export class FeaturedContentController {
       FeaturedContentResponse[]
     >(new GetFeaturedContentQuery(payload));
 
-    this.apiGateWayService.emit('featured.content.response', response);
+    this.apiGatewayMicroserviceClient.emit(
+      FEATURED_CONTENT_RES_EVENT,
+      response,
+    );
   }
 
-  @EventPattern('featured.content.translation.request')
+  @EventPattern(FEATURED_CONTENT_TRANSLATION_REQ_EVENT)
   async featuredContentSendTranslatedContentRequest(
     @Payload() payload: FeaturedTranslatedContentRequest,
   ) {
@@ -54,14 +67,14 @@ export class FeaturedContentController {
       }),
     );
 
-    this.featuredContentTranslatedService.emit(
-      'translation.request',
+    this.translationMicroserviceClient.emit(
+      TRANSLATION_REQ_EVENT,
       new TranslationRequest(featuredContentList, payload.languageTarget),
     );
   }
 
-  @EventPattern('translation.response')
+  @EventPattern(TRANSLATION_RES_EVENT)
   async translationResponse(@Payload() payload: FeaturedContentResponse[]) {
-    this.apiGateWayService.emit('featured.content.response', payload);
+    this.apiGatewayMicroserviceClient.emit(FEATURED_CONTENT_RES_EVENT, payload);
   }
 }

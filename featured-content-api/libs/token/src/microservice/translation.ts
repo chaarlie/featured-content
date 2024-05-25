@@ -1,0 +1,7 @@
+// EVENT TOKENS
+export const TRANSLATION_REQ_EVENT = 'translation.request';
+export const TRANSLATION_RES_EVENT = 'translation.response';
+
+// MICROSERVICE CLIENT TOKENS
+export const TRANSLATION_MICROSERVICE_CLIENT =
+  'TRANSLATION_MICROSERVICE_CLIENT';

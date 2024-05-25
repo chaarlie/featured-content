@@ -12,8 +12,11 @@ import {
   rmqEnvConfigFactory,
 } from '@app/rmq-env-config';
 import { TranslationModule } from '../../translation/src/translation.module';
-
-export const TRANSLATION_SERVICE = 'TRANSLATION_SERVICE';
+import {
+  API_GATEWAY_MICROSERVICE_CLIENT,
+  FEATURED_CONTENT_TRANSLATED_QUEUE,
+  TRANSLATION_MICROSERVICE_CLIENT,
+} from '@app/token';
 
 const application = [GetFeaturedContentQueryHandler];
 
@@ -24,7 +27,7 @@ const application = [GetFeaturedContentQueryHandler];
     CqrsModule,
     ClientsModule.register([
       {
-        name: 'API_GATEWAY',
+        name: API_GATEWAY_MICROSERVICE_CLIENT,
         transport: Transport.TCP,
         options: {
           port: 8000,
@@ -35,8 +38,8 @@ const application = [GetFeaturedContentQueryHandler];
     ClientsModule.registerAsync([
       {
         imports: [RmqEnvConfigModule],
-        name: TRANSLATION_SERVICE,
-        useFactory: rmqEnvConfigFactory('FEATURED_CONTENT_TRANSLATED'),
+        name: TRANSLATION_MICROSERVICE_CLIENT,
+        useFactory: rmqEnvConfigFactory(FEATURED_CONTENT_TRANSLATED_QUEUE),
         inject: [RmqEnvConfigService],
       },
     ]),

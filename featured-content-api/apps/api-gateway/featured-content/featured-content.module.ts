@@ -8,16 +8,18 @@ import {
   rmqEnvConfigFactory,
 } from '@app/rmq-env-config';
 import { SseNotificationService } from './sse-notification.service';
-
-export const FEATURED_CONTENT_SERVICE = 'FEATURED_CONTENT_SERVICE';
+import {
+  FEATURED_CONTENT_MICROSERVICE_CLIENT,
+  FEATURED_CONTENT_QUEUE,
+} from '@app/token';
 
 @Module({
   imports: [
     ClientsModule.registerAsync([
       {
         imports: [RmqEnvConfigModule],
-        name: FEATURED_CONTENT_SERVICE,
-        useFactory: rmqEnvConfigFactory('FEATURED_CONTENT'),
+        name: FEATURED_CONTENT_MICROSERVICE_CLIENT,
+        useFactory: rmqEnvConfigFactory(FEATURED_CONTENT_QUEUE),
         inject: [RmqEnvConfigService],
       },
     ]),

@@ -4,20 +4,24 @@ import {
   FeaturedContentRequest,
   FeaturedTranslatedContentRequest,
 } from '@app/payload';
-import { FEATURED_CONTENT_SERVICE } from './featured-content.module';
+import {
+  FEATURED_CONTENT_MICROSERVICE_CLIENT,
+  FEATURED_CONTENT_REQ_EVENT,
+  FEATURED_CONTENT_TRANSLATION_REQ_EVENT,
+} from '@app/token';
 
 @Injectable()
 export class FeaturedContentService {
   constructor(
-    @Inject(forwardRef(() => FEATURED_CONTENT_SERVICE))
-    private readonly featuredContentService: ClientRMQ,
+    @Inject(forwardRef(() => FEATURED_CONTENT_MICROSERVICE_CLIENT))
+    private readonly featuredContentMicroserviceClient: ClientRMQ,
   ) {}
 
   featuredContentSendContentRequest(
     featuredContentRequest: FeaturedContentRequest,
   ) {
-    this.featuredContentService.emit(
-      'featured.content.request',
+    this.featuredContentMicroserviceClient.emit(
+      FEATURED_CONTENT_REQ_EVENT,
       featuredContentRequest,
     );
   }
@@ -25,8 +29,8 @@ export class FeaturedContentService {
   featuredContentSendTranslatedContentRequest(
     featuredContentRequest: FeaturedTranslatedContentRequest,
   ) {
-    this.featuredContentService.emit(
-      'featured.content.translation.request',
+    this.featuredContentMicroserviceClient.emit(
+      FEATURED_CONTENT_TRANSLATION_REQ_EVENT,
       featuredContentRequest,
     );
   }

@@ -9,8 +9,10 @@ import {
   RmqEnvConfigService,
   rmqEnvConfigFactory,
 } from '@app/rmq-env-config';
-
-export const FEATURED_CONTENT_SERVICE = 'FEATURED_CONTENT_SERVICE';
+import {
+  FEATURED_CONTENT_TRANSLATED_QUEUE,
+  TRANSLATION_MICROSERVICE_CLIENT,
+} from '@app/token';
 
 const application = [GetJsonTranslatedQuery, GetJsonTranslatedQueryHandler];
 
@@ -20,8 +22,8 @@ const application = [GetJsonTranslatedQuery, GetJsonTranslatedQueryHandler];
     ClientsModule.registerAsync([
       {
         imports: [RmqEnvConfigModule],
-        name: FEATURED_CONTENT_SERVICE,
-        useFactory: rmqEnvConfigFactory('FEATURED_CONTENT'),
+        name: TRANSLATION_MICROSERVICE_CLIENT,
+        useFactory: rmqEnvConfigFactory(FEATURED_CONTENT_TRANSLATED_QUEUE),
         inject: [RmqEnvConfigService],
       },
     ]),

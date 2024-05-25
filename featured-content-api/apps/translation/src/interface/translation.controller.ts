@@ -3,17 +3,21 @@ import { ClientRMQ, EventPattern, Payload } from '@nestjs/microservices';
 import { QueryBus } from '@nestjs/cqrs';
 import { GetJsonTranslatedQuery } from '../application/get-json-translated.query';
 import { TranslationRequest } from '@app/payload';
-import { FEATURED_CONTENT_SERVICE } from '../translation.module';
+import {
+  TRANSLATION_MICROSERVICE_CLIENT,
+  TRANSLATION_REQ_EVENT,
+  TRANSLATION_RES_EVENT,
+} from '@app/token';
 
 @Controller()
 export class TranslationController {
   constructor(
-    @Inject(forwardRef(() => FEATURED_CONTENT_SERVICE))
-    private readonly featuredContentService: ClientRMQ,
+    @Inject(forwardRef(() => TRANSLATION_MICROSERVICE_CLIENT))
+    private readonly translationMicroserviceClient: ClientRMQ,
     private readonly queryBus: QueryBus,
   ) {}
 
-  @EventPattern('translation.request')
+  @EventPattern(TRANSLATION_REQ_EVENT)
   async translationJsonContentRequest(@Payload() payload: TranslationRequest) {
     const contentTranslationList = await this.queryBus.execute(
       new GetJsonTranslatedQuery({
@@ -21,8 +25,8 @@ export class TranslationController {
         languageTarget: payload.languageTarget,
       }),
     );
-    this.featuredContentService.emit(
-      'translation.response',
+    this.translationMicroserviceClient.emit(
+      TRANSLATION_RES_EVENT,
       contentTranslationList,
     );
   }

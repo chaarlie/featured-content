@@ -88,6 +88,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/payload/tsconfig.lib.json"
       }
+    },
+    "token": {
+      "type": "library",
+      "root": "libs/token",
+      "entryFile": "index",
+      "sourceRoot": "libs/token/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/token/tsconfig.lib.json"
+      }
     }
   },
   "monorepo": true,

@@ -13,6 +13,7 @@ import { ContentMonthParam } from './dto/content-month.param';
 import { EventPattern } from '@nestjs/microservices';
 import { ContentLanguageTargetParam } from './dto/content-language-target.param';
 import { SseNotificationService } from './sse-notification.service';
+import { FEATURED_CONTENT_RES_EVENT } from '@app/token';
 
 export enum NotificationKeys {
   FEATURED_CONTENT = 'featured-content',
@@ -78,7 +79,7 @@ export class FeaturedContentController {
     return this.sseNotificationService.getNotificationValue(key);
   }
 
-  @EventPattern('featured.content.response')
+  @EventPattern(FEATURED_CONTENT_RES_EVENT)
   featuredContentSendContentResponse(payload: FeaturedContentResponse[]) {
     this.sseNotificationService.setNotificationValue(
       NotificationKeys.FEATURED_CONTENT,
