@@ -30,8 +30,8 @@ const application = [GetFeaturedContentQueryHandler];
         name: API_GATEWAY_MICROSERVICE_CLIENT,
         transport: Transport.TCP,
         options: {
-          port: 8000,
-          host: 'localhost',
+          port: Number(process.env.API_GATEWAY_PORT),
+          host: process.env.API_GATEWAY_HOST
         },
       },
     ]),

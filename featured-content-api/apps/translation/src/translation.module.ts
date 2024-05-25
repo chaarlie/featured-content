@@ -9,10 +9,7 @@ import {
   RmqEnvConfigService,
   rmqEnvConfigFactory,
 } from '@app/rmq-env-config';
-import {
-  FEATURED_CONTENT_TRANSLATED_QUEUE,
-  TRANSLATION_MICROSERVICE_CLIENT,
-} from '@app/token';
+import { FEATURED_CONTENT_QUEUE, TRANSLATION_MICROSERVICE_CLIENT } from '@app/token';
 
 const application = [GetJsonTranslatedQuery, GetJsonTranslatedQueryHandler];
 
@@ -23,7 +20,7 @@ const application = [GetJsonTranslatedQuery, GetJsonTranslatedQueryHandler];
       {
         imports: [RmqEnvConfigModule],
         name: TRANSLATION_MICROSERVICE_CLIENT,
-        useFactory: rmqEnvConfigFactory(FEATURED_CONTENT_TRANSLATED_QUEUE),
+        useFactory: rmqEnvConfigFactory(FEATURED_CONTENT_QUEUE),
         inject: [RmqEnvConfigService],
       },
     ]),
