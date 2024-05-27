@@ -9,13 +9,18 @@ import {
   RmqEnvConfigService,
   rmqEnvConfigFactory,
 } from '@app/rmq-env-config';
-import { FEATURED_CONTENT_QUEUE, TRANSLATION_MICROSERVICE_CLIENT } from '@app/token';
+import {
+  FEATURED_CONTENT_QUEUE,
+  TRANSLATION_MICROSERVICE_CLIENT,
+} from '@app/token';
+import { RedisClientManagerModule } from '@app/redis-client-manager';
 
 const application = [GetJsonTranslatedQuery, GetJsonTranslatedQueryHandler];
 
 @Module({
   imports: [
     CqrsModule,
+    RedisClientManagerModule,
     ClientsModule.registerAsync([
       {
         imports: [RmqEnvConfigModule],

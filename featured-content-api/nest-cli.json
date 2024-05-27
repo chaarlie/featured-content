@@ -97,6 +97,24 @@
       "compilerOptions": {
         "tsConfigPath": "libs/token/tsconfig.lib.json"
       }
+    },
+    "redis-client-manager": {
+      "type": "library",
+      "root": "libs/redis-client-manager",
+      "entryFile": "index",
+      "sourceRoot": "libs/redis-client-manager/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/redis-client-manager/tsconfig.lib.json"
+      }
+    },
+    "types": {
+      "type": "library",
+      "root": "libs/types",
+      "entryFile": "index",
+      "sourceRoot": "libs/types/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/types/tsconfig.lib.json"
+      }
     }
   },
   "monorepo": true,

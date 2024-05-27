@@ -4,9 +4,14 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 
 import { GetJsonTranslatedQuery } from './get-json-translated.query';
 import { FeaturedContentResponse } from '@app/payload';
+import { RedisClientManagerService } from '@app/redis-client-manager';
 
 @QueryHandler(GetJsonTranslatedQuery)
 export class GetJsonTranslatedQueryHandler implements IQueryHandler {
+  constructor(
+    private readonly redisClientManagerService: RedisClientManagerService,
+  ) {}
+
   private async libreTranslateApiCall(q, target) {
     let resultText = '';
 
@@ -65,9 +70,7 @@ export class GetJsonTranslatedQueryHandler implements IQueryHandler {
     return obCopy;
   }
 
-  async execute(
-    query: GetJsonTranslatedQuery,
-  ): Promise<FeaturedContentResponse[]> {
+  private async getTranslatedContentList(query: GetJsonTranslatedQuery) {
     const contentTranslationList = await Promise.all(
       query.jsonObArray.map((el: any) => {
         return this.translateObjectValues(el, query.languageTarget);
@@ -79,5 +82,34 @@ export class GetJsonTranslatedQueryHandler implements IQueryHandler {
     );
 
     return contentTranslationListStringified;
+  }
+
+  async execute(
+    query: GetJsonTranslatedQuery,
+  ): Promise<FeaturedContentResponse[]> {
+    let contentList: FeaturedContentResponse[] = [];
+
+    const cacheKey = this.redisClientManagerService.generateCacheKey(query);
+    const cacheData =
+      await this.redisClientManagerService.cache.get<string>(cacheKey);
+
+    if (cacheData) {
+      try {
+        contentList = JSON.parse(cacheData);
+      } catch (error) {
+        console.error(error);
+      }
+
+      return contentList as FeaturedContentResponse[];
+    }
+
+    contentList = await this.getTranslatedContentList(query);
+
+    this.redisClientManagerService.cache.set(
+      cacheKey,
+      JSON.stringify(contentList),
+    );
+
+    return contentList;
   }
 }

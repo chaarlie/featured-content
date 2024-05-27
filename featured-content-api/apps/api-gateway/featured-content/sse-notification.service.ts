@@ -1,14 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { Subject } from 'rxjs/internal/Subject';
-import { NotificationKeys } from './fetured-content.controller';
-
-export interface SSMessageEvent {
-  data: string | object;
-  id?: string;
-  type?: string;
-  retry?: number;
-}
+import { NotificationKeys, SSMessageEvent } from '@app/types';
 
 @Injectable()
 export class SseNotificationService {

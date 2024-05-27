@@ -41,6 +41,18 @@
       ],
       "@app/token/*": [
         "libs/token/src/*"
+      ],
+      "@app/redis-client-manager": [
+        "libs/redis-client-manager/src"
+      ],
+      "@app/redis-client-manager/*": [
+        "libs/redis-client-manager/src/*"
+      ],
+      "@app/types": [
+        "libs/types/src"
+      ],
+      "@app/types/*": [
+        "libs/types/src/*"
       ]
     }
   }

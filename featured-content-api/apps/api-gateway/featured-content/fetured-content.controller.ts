@@ -14,11 +14,7 @@ import { EventPattern } from '@nestjs/microservices';
 import { ContentLanguageTargetParam } from './dto/content-language-target.param';
 import { SseNotificationService } from './sse-notification.service';
 import { FEATURED_CONTENT_RES_EVENT } from '@app/token';
-
-export enum NotificationKeys {
-  FEATURED_CONTENT = 'featured-content',
-  FEATURED_CONTENT_TRANSLATED = 'featured-content-translated',
-}
+import { NotificationKeys } from '@app/types';
 
 @Controller()
 export class FeaturedContentController {

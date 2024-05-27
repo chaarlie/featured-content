@@ -1,5 +1,5 @@
-export * from './microservice/api-gateway';
-export * from './microservice/featured-content';
-export * from './microservice/translation';
+export * from './microservices/api-gateway';
+export * from './microservices/featured-content';
+export * from './microservices/translation';
 
-export * from './queue/rabbit-mq';
+export * from './queues/rabbit-mq';

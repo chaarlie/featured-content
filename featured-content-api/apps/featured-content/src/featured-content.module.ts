@@ -17,6 +17,7 @@ import {
   FEATURED_CONTENT_TRANSLATED_QUEUE,
   TRANSLATION_MICROSERVICE_CLIENT,
 } from '@app/token';
+import { RedisClientManagerModule } from '@app/redis-client-manager';
 
 const application = [GetFeaturedContentQueryHandler];
 
@@ -25,13 +26,14 @@ const application = [GetFeaturedContentQueryHandler];
     TranslationModule,
     ProxyWikimediaRequestModule,
     CqrsModule,
+    RedisClientManagerModule,
     ClientsModule.register([
       {
         name: API_GATEWAY_MICROSERVICE_CLIENT,
         transport: Transport.TCP,
         options: {
           port: Number(process.env.API_GATEWAY_PORT),
-          host: process.env.API_GATEWAY_HOST
+          host: process.env.API_GATEWAY_HOST,
         },
       },
     ]),

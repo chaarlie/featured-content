@@ -12,7 +12,7 @@ async function bootstrap() {
     transport: Transport.TCP,
     options: {
       port: Number(process.env.API_GATEWAY_PORT),
-      host: process.env.API_GATEWAY_HOST
+      host: process.env.API_GATEWAY_HOST,
     },
   });
 
