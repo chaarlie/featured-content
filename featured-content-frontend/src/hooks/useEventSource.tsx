@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { EventSourceParse } from "../types";
 
 export function useEventSource<T>(key: string) {
   const [data, setData] = useState<T | T[]>();
@@ -10,31 +11,16 @@ export function useEventSource<T>(key: string) {
 
     eventSource.onmessage = ({ data }: MessageEvent) => {
       if (data) {
-        let parsedData;
+        let parsedOb;
 
-        try {
-          parsedData = JSON.parse(data);
+       try {
+          parsedOb = JSON.parse(data);
+          parsedOb = parsedOb as EventSourceParse<T>
         } catch (error) {
           console.error(error);
         }
 
-        if (Array.isArray(parsedData)) {
-          const parsedDataList = parsedData.map<T>((el) => {
-            let parsedEl = null;
-            try {
-              parsedEl = JSON.parse(el);
-            } catch (error) {
-              console.error(error);
-            }
-
-            return parsedEl as T;
-          });
-
-          parsedData = parsedDataList;
-        } else {
-        }
-
-        setData(parsedData);
+        setData(parsedOb);
       }
     };
 

@@ -39,3 +39,8 @@ lerna-debug.log*
 
 # Secretes
 .env
+
+# Redis
+.clj-kondo/
+.lsp/
+

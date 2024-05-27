@@ -42,10 +42,10 @@ function FeaturedContentContainer({
   const { hasLoadedImages: hasLoadedContentImages } =
     useLoadedImages(contentImages);
   const { hasLoadedImages: hasLoadedFlagImages } = useLoadedImages(
- useMemo(() =>    countryFlags.map(({ url }) => url), [countryFlags])
+    useMemo(() => countryFlags.map(({ url }) => url), [countryFlags])
   );
 
-  const shouldSubmitForm = formattedDate && currentFlag && itemQty > 0
+  const shouldSubmitForm = formattedDate && currentFlag && itemQty > 0;
 
   const { data: featuredContentEventData } =
     useEventSource<FeaturedContent>("featured-content");
@@ -82,7 +82,9 @@ function FeaturedContentContainer({
 
       const isLangEnglish = currentFlag?.key === "en";
 
-      const REQ_URL = isLangEnglish? `${process.env.REACT_APP_API_URL}/feed/en/${formattedDate}?qty=${itemQty}` : `${process.env.REACT_APP_API_URL}/feed/translate/en/${currentFlag.key}/${formattedDate}?qty=${itemQty}`
+      const REQ_URL = isLangEnglish
+        ? `${process.env.REACT_APP_API_URL}/feed/en/${formattedDate}?qty=${itemQty}`
+        : `${process.env.REACT_APP_API_URL}/feed/translate/en/${currentFlag.key}/${formattedDate}?qty=${itemQty}`;
 
       axios.get<any[]>(REQ_URL);
     }
@@ -108,12 +110,10 @@ function FeaturedContentContainer({
       setFeaturedContentList(featuredContentEventData);
     }
   }, [featuredContentEventData]);
-  
 
   const shouldDisplayContentList =
     hasLoadedContentImages && featuredContentList.length > 0;
 
-  
   return (
     <section className="bg-primary-2 drop-shadow-lg  col-span-2 grid grid-rows-6 p-10 h-[calc(100%-3rem)]">
       {hasLoadedFlagImages ? (
@@ -174,7 +174,12 @@ function FeaturedContentContainer({
 
           <div className="justify-self-center flex-col  justify-center items-center col-span-3 mt-1 ">
             <div className="flex justify-center items-center ">
-              <button disabled={!shouldSubmitForm} className={`bg-primary-1 ${shouldSubmitForm? '' : ' opacity-60'} font-bold text-white hover:bg-shade-6 active:text-slate-100 active:pt-[1px] active:pl-[2px] rounded w-20 h-8`}>
+              <button
+                disabled={!shouldSubmitForm}
+                className={`bg-primary-1 ${
+                  shouldSubmitForm ? "" : " opacity-60"
+                } font-bold text-white hover:bg-shade-6 active:text-slate-100 active:pt-[1px] active:pl-[2px] rounded w-20 h-8`}
+              >
                 Submit
               </button>
             </div>

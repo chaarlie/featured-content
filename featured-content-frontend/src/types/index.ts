@@ -1,3 +1,5 @@
+export type EventSourceParse<T> = T extends Array<T> ? T[] : T
+
 export type FeaturedArticle =  {
     title: string
     originalImage: string | null
