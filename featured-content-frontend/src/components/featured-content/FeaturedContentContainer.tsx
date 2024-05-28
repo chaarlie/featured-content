@@ -1,15 +1,22 @@
-import React, { FormEvent, useEffect, useMemo, useState } from "react";
-import FeaturedContentCard from "./FeaturedContentCard";
-import FeaturedContentNextElementContainer from "./FeaturedContentNextElementContainer";
+import {
+  FormEvent,
+  Suspense,
+  lazy,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { ContentLang, FeaturedContent } from "../../types";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import FeaturedContentDateSelection from "./FeaturedContentDateSelection";
 import moment from "moment";
 import { useLoadedImages } from "../../hooks/useLoadedImages";
 import { useEventSource } from "../../hooks/useEventSource";
+import Loader from "../loader/Loader";
 
-const IMAGE_NOT_FOUND =
-  "https://media.istockphoto.com/id/1147544807/es/vector/no-imagen-en-miniatura-gr%C3%A1fico-vectorial.jpg?s=1024x1024&w=is&k=20&c=jMNMEtHs4WCgUd9WCoR2gcKdD0UAOFoTROlutZRWNLE=";
+const FeaturedContentListDisplay = lazy(
+  () => import("./FeaturedContentListDisplay")
+);
 
 const countryFlags = [
   { key: "en", url: "https://flagsapi.com/US/flat/64.png" },
@@ -49,6 +56,9 @@ function FeaturedContentContainer({
 
   const { data: featuredContentEventData } =
     useEventSource<FeaturedContent>("featured-content");
+
+  const { data: processStatusEventData } =
+    useEventSource<string>("process-status");
 
   function pickNextFlag() {
     pickFlag(1);
@@ -117,102 +127,87 @@ function FeaturedContentContainer({
   return (
     <section className="bg-primary-2 drop-shadow-lg  col-span-2 grid grid-rows-6 p-10 h-[calc(100%-3rem)]">
       {hasLoadedFlagImages ? (
-        <form className="row-start-1 row-end-2" onSubmit={handleSubmit}>
-          <div className="grid grid-cols-2 grid-flow-row bg-shade-2 p-5 rounded ">
-            <FeaturedContentDateSelection setCurrentDate={setCurrentDate} />
+        <div className="row-start-1 row-end-2">
+          <form onSubmit={handleSubmit}>
+            <div className="grid grid-cols-2 grid-flow-row bg-shade-2 p-5 rounded ">
+              <FeaturedContentDateSelection setCurrentDate={setCurrentDate} />
 
-            <div className="rounded flex bg-shade-1 round">
-              <div className="grid grid-cols-5 w-11/12">
-                <div className="col-span-3 w-full">
-                  <img
-                    className="object-cover h-24 w-28"
-                    src={currentFlag?.url}
+              <div className="rounded flex bg-shade-1 round">
+                <div className="grid grid-cols-5 w-11/12">
+                  <div className="col-span-3 w-full">
+                    <img
+                      className="object-cover h-24 w-28"
+                      src={currentFlag?.url}
+                    />
+                  </div>
+                  <div className="bg-primary-2 inset-0 p-0  flex justify-center items-center col-span-2">
+                    <div className="border-b-2 border-shade-2">
+                      <span className="text-4xl inline-block capitalize ">
+                        {currentFlag?.key}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex justify-center items-center w-5 p-2">
+                  <div className="grid grid-rows-3  text-accent-1 ">
+                    <div className="cursor-pointer" onClick={pickNextFlag}>
+                      {" "}
+                      &#8593;
+                    </div>
+                    <div
+                      className="row-start-3 cursor-pointer"
+                      onClick={pickPreviousFlag}
+                    >
+                      {" "}
+                      &#8595;{" "}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="justify-self-center flex-col gap-5 justify-center items-center col-span-3 mt-5">
+                <div className="flex justify-center items-center ">
+                  <span>Quantity</span>
+                </div>
+                <div>
+                  <input
+                    onChange={(event) => setItemQty(Number(event.target.value))}
+                    value={itemQty}
+                    className="p-1 w-36"
+                    type="number"
+                    min={1}
+                    max={5}
                   />
                 </div>
-                <div className="bg-primary-2 inset-0 p-0  flex justify-center items-center col-span-2">
-                  <div className="border-b-2 border-shade-2">
-                    <span className="text-4xl inline-block capitalize ">
-                      {currentFlag?.key}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex justify-center items-center w-5 p-2">
-                <div className="grid grid-rows-3  text-accent-1 ">
-                  <div className="cursor-pointer" onClick={pickNextFlag}>
-                    {" "}
-                    &#8593;
-                  </div>
-                  <div
-                    className="row-start-3 cursor-pointer"
-                    onClick={pickPreviousFlag}
-                  >
-                    {" "}
-                    &#8595;{" "}
-                  </div>
-                </div>
               </div>
             </div>
 
-            <div className="justify-self-center flex-col gap-5 justify-center items-center col-span-3 mt-5">
+            <div className="justify-self-center flex-col  justify-center items-center col-span-3 mt-1 ">
               <div className="flex justify-center items-center ">
-                <span>Quantity</span>
-              </div>
-              <div>
-                <input
-                  onChange={(event) => setItemQty(Number(event.target.value))}
-                  value={itemQty}
-                  className="p-1 w-36"
-                  type="number"
-                  min={1}
-                  max={5}
-                />
+                <button
+                  disabled={!shouldSubmitForm}
+                  className={`bg-primary-1 ${
+                    shouldSubmitForm ? "" : " opacity-60"
+                  } font-bold text-white hover:bg-shade-6 active:text-slate-100 active:pt-[1px] active:pl-[2px] rounded w-20 h-8`}
+                >
+                  Submit
+                </button>
               </div>
             </div>
-          </div>
-
-          <div className="justify-self-center flex-col  justify-center items-center col-span-3 mt-1 ">
-            <div className="flex justify-center items-center ">
-              <button
-                disabled={!shouldSubmitForm}
-                className={`bg-primary-1 ${
-                  shouldSubmitForm ? "" : " opacity-60"
-                } font-bold text-white hover:bg-shade-6 active:text-slate-100 active:pt-[1px] active:pl-[2px] rounded w-20 h-8`}
-              >
-                Submit
-              </button>
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
       ) : null}
 
-      <div className="row-start-2 mt-24 row-end-6">
-        <div className="flex flex-col gap-3">
-          <div className="overflow-auto grid grid-cols-3 grid-flow-row gap-10 bg-shade-2 p-4 rounded auto-rows-max w-full min-h-96 max-h-96 ">
-            {shouldDisplayContentList ? (
-              featuredContentList.map((content) => {
-                if (!content.featuredArticle) return null;
-
-                const { featuredArticle } = content;
-
-                return (
-                  <FeaturedContentCard
-                    key={content.id}
-                    title={featuredArticle.title}
-                    img={featuredArticle.thumbnail || IMAGE_NOT_FOUND}
-                    content={featuredArticle.description}
-                  />
-                );
-              })
-            ) : formattedDate ? (
-              <p>Loading...</p>
-            ) : null}
-          </div>
-
-          <FeaturedContentNextElementContainer />
-        </div>
-      </div>
+      {processStatusEventData ? (
+        <Suspense fallback={<Loader status={processStatusEventData} />}>
+          <FeaturedContentListDisplay
+            shouldDisplayContentList={shouldDisplayContentList}
+            featuredContentList={featuredContentList}
+            processStatus={processStatusEventData}
+          />
+        </Suspense>
+      ) : null}
     </section>
   );
 }
