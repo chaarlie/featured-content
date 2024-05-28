@@ -13,15 +13,18 @@ import { ContentMonthParam } from './dto/content-month.param';
 import { EventPattern } from '@nestjs/microservices';
 import { ContentLanguageTargetParam } from './dto/content-language-target.param';
 import { SseNotificationService } from './sse-notification.service';
-import { FEATURED_CONTENT_RES_EVENT } from '@app/token';
-import { NotificationKeys } from '@app/types';
+import {
+  FEATURED_CONTENT_RES_EVENT,
+  FEATURED_CONTENT_UPDATE_PROCESS_STATUS_EVENT,
+} from '@app/token';
+import { NotificationKeys, ProcessStatus } from '@app/types';
 
 @Controller()
 export class FeaturedContentController {
   constructor(
     private readonly featuredContentService: FeaturedContentService,
     private readonly sseNotificationService: SseNotificationService,
-  ) {}
+  ) { }
 
   @Get('feed/health')
   getHealth() {
@@ -75,8 +78,20 @@ export class FeaturedContentController {
     return this.sseNotificationService.getNotificationValue(key);
   }
 
+  @EventPattern(FEATURED_CONTENT_UPDATE_PROCESS_STATUS_EVENT)
+  featuredContentProcessStatus(payload: ProcessStatus) {
+    this.sseNotificationService.setNotificationValue(
+      NotificationKeys.PROCESS_STATUS,
+      payload,
+    );
+  }
+
   @EventPattern(FEATURED_CONTENT_RES_EVENT)
   featuredContentSendContentResponse(payload: FeaturedContentResponse[]) {
+    this.sseNotificationService.setNotificationValue(
+      NotificationKeys.PROCESS_STATUS,
+      ProcessStatus.COMPLETED,
+    );
     this.sseNotificationService.setNotificationValue(
       NotificationKeys.FEATURED_CONTENT,
       payload,

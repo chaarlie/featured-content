@@ -15,6 +15,7 @@ import { QueryBus } from '@nestjs/cqrs';
 import { GetFeaturedContentQuery } from '../application/get-featured-content.query';
 import {
   API_GATEWAY_MICROSERVICE_CLIENT,
+  FEATURED_CONTENT_UPDATE_PROCESS_STATUS_EVENT,
   TRANSLATION_MICROSERVICE_CLIENT,
 } from '@app/token';
 import {
@@ -24,6 +25,7 @@ import {
   TRANSLATION_REQ_EVENT,
   TRANSLATION_RES_EVENT,
 } from '@app/token';
+import { ProcessStatus } from '@app/types';
 
 @Controller()
 export class FeaturedContentController {
@@ -39,6 +41,11 @@ export class FeaturedContentController {
   async featuredContentProcessRequest(
     @Payload() payload: FeaturedContentRequest,
   ) {
+    this.apiGatewayMicroserviceClient.emit(
+      FEATURED_CONTENT_UPDATE_PROCESS_STATUS_EVENT,
+      ProcessStatus.FETCHING,
+    );
+
     const response = await this.queryBus.execute<
       GetFeaturedContentQuery,
       FeaturedContentResponse[]
@@ -54,6 +61,11 @@ export class FeaturedContentController {
   async featuredContentSendTranslatedContentRequest(
     @Payload() payload: FeaturedTranslatedContentRequest,
   ) {
+    this.apiGatewayMicroserviceClient.emit(
+      FEATURED_CONTENT_UPDATE_PROCESS_STATUS_EVENT,
+      ProcessStatus.FETCHING,
+    );
+
     const featuredContentList = await this.queryBus.execute<
       GetFeaturedContentQuery,
       FeaturedContentResponse[]
@@ -65,6 +77,11 @@ export class FeaturedContentController {
         day: payload.day,
         qty: payload.qty,
       }),
+    );
+
+    this.apiGatewayMicroserviceClient.emit(
+      FEATURED_CONTENT_UPDATE_PROCESS_STATUS_EVENT,
+      ProcessStatus.TRANSLATING,
     );
 
     this.translationMicroserviceClient.emit(
