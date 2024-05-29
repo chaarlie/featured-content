@@ -1,0 +1,30 @@
+
+FROM node:18-alpine As development
+
+ENV TRANSLATION_SERVICE_HOST=${TRANSLATION_SERVICE_HOST}
+ENV TRANSLATION_SERVICE_PORT=${TRANSLATION_SERVICE_PORT}
+ENV BACKEND_PORT=${BACKEND_PORT}
+ENV API_GATEWAY_HOST=${API_GATEWAY_HOST}
+ENV API_GATEWAY_PORT=${API_GATEWAY_PORT}
+ENV RMQ_HOST=${RMQ_HOST}
+ENV RMQ_PORT=${RMQ_PORT}
+ENV REDIS_HOST=${REDIS_HOST}
+ENV REDIS_PORT=${REDIS_PORT}
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+COPY tsconfig.json ./
+COPY nest-cli.json ./
+COPY ./libs/  ./libs
+
+RUN npm install --only=development  
+
+COPY ./apps/translation/ ./apps/translation
+
+RUN npm run build translation
+
+CMD ["node", "dist/apps/translation/main"]
+
+
+ 

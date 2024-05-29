@@ -24,7 +24,7 @@ export class FeaturedContentController {
   constructor(
     private readonly featuredContentService: FeaturedContentService,
     private readonly sseNotificationService: SseNotificationService,
-  ) { }
+  ) {}
 
   @Get('feed/health')
   getHealth() {

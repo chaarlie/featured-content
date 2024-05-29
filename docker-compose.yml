@@ -1,19 +1,55 @@
 version: "3.8"
 services:
-  node-api:
-      container_name:  node-api
-      restart: always
-      build:
-        context: ./featured-content-api
-      image:  node-api
-      ports:
-      - $BACKEND_PORT:$BACKEND_PORT 
-      environment:
-        - TRANSLATION_SERVICE_PORT=$TRANSLATION_SERVICE_PORT
-        - TRANSLATION_SERVICE_HOST=$TRANSLATION_SERVICE_HOST
-        - BACKEND_PORT=$BACKEND_PORT
-      depends_on:
+  api-gateway:
+    hostname: $API_GATEWAY_HOST
+    container_name: api-gateway
+    restart: always
+    env_file:
+      - .env
+    build:
+      context: ./featured-content-api
+      dockerfile: Dockerfile.api-gateway
+    image:  api-gateway-microservice
+    ports:
+      - 127.0.0.1:$BACKEND_PORT:$BACKEND_PORT
+    depends_on:
       - libretranslate
+      - redis
+      - rabbit-mq
+    networks:
+      - app-network
+  featured-content:
+    container_name: featured-content-microservice
+    restart: always
+    env_file:
+      - .env
+    build:
+      context: ./featured-content-api
+      dockerfile: Dockerfile.featured-content
+    image:  featured-content-microservice
+    depends_on:
+      - api-gateway
+      - libretranslate
+      - redis
+      - rabbit-mq
+    networks:
+      - app-network
+  translation:
+    container_name: translation-microservice
+    restart: always
+    env_file:
+      - .env
+    build:
+      context: ./featured-content-api
+      dockerfile: Dockerfile.translation
+    image:  translation-microservice
+    depends_on:
+      - api-gateway
+      - libretranslate
+      - redis
+      - rabbit-mq
+    networks:
+      - app-network
   front-end:
     container_name: frontend-webapp
     restart: always
@@ -26,10 +62,28 @@ services:
       - REACT_APP_API_URL=$REACT_APP_API_URL
       - CLIENT_PORT=$CLIENT_PORT
     depends_on:
-      - node-api
+      - api-gateway
     networks:
       - app-network
-
+  rabbit-mq:
+    container_name: rabbit-mq
+    image: rabbitmq:3-management
+    restart: unless-stopped
+    ports:
+      - $RMQ_MGMT_PORT:15672 
+      - $RMQ_PORT:5672
+    tty: true
+    networks:
+      - app-network
+  redis:
+    container_name: redis
+    image: redis/redis-stack-server:latest
+    restart: unless-stopped
+    ports:
+      - $REDIS_PORT:6379 
+    tty: true
+    networks:
+      - app-network
   libretranslate:
     container_name: libretranslate
     image: libretranslate/libretranslate:latest
@@ -50,7 +104,6 @@ services:
       - ./data/argos-translate:/home/libretranslate/.local/share/argos-translate
     networks:
       - app-network
- 
 networks:
   app-network:
 volumes:
