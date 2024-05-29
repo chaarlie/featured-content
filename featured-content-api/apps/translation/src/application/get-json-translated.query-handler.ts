@@ -8,6 +8,10 @@ import { RedisClientManagerService } from '@app/redis-client-manager';
 
 @QueryHandler(GetJsonTranslatedQuery)
 export class GetJsonTranslatedQueryHandler implements IQueryHandler {
+  private readonly urlRegex: RegExp = new RegExp(
+    'https?://(?:www.)?[a-zA-Z0-9.-]+.[a-zA-Z]{2,}(?:/S*)?',
+  );
+
   constructor(
     private readonly redisClientManagerService: RedisClientManagerService,
   ) {}
@@ -46,7 +50,14 @@ export class GetJsonTranslatedQueryHandler implements IQueryHandler {
 
     for (const key in obCopy) {
       let currentEl = obCopy[key];
+
       if (typeof currentEl === 'string' && currentEl.length) {
+        if (currentEl.match(this.urlRegex)) {
+          obCopy[key] = currentEl;
+
+          continue;
+        }
+
         currentEl = await this.libreTranslateApiCall(currentEl, languageTarget);
       }
 
