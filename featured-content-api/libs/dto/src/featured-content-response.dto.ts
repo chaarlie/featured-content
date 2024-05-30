@@ -23,7 +23,7 @@ type MostRead = {
   articles: MostReadArticle[];
 };
 
-export interface FeaturedContentResponse {
+export interface FeaturedContentResponseDto {
   readonly id: string;
   featuredArticle: FeaturedArticle;
   featuredImage: FeaturedImage;

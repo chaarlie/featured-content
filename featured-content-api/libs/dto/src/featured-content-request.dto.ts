@@ -1,4 +1,4 @@
-export class FeaturedContentRequest {
+export class FeaturedContentRequestDto {
   constructor(
     public language: string,
     public year: string,

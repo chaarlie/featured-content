@@ -1,4 +1,4 @@
-export class FeaturedTranslatedContentRequest {
+export class FeaturedTranslatedContentRequestDto {
   constructor(
     public languageSource: string,
     public languageTarget: string,

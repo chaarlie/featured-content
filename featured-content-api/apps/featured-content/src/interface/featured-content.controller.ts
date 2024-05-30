@@ -6,11 +6,11 @@ import {
   Payload,
 } from '@nestjs/microservices';
 import {
-  FeaturedContentRequest,
-  FeaturedContentResponse,
-  FeaturedTranslatedContentRequest,
-  TranslationRequest,
-} from '@app/payload';
+  FeaturedContentRequestDto,
+  FeaturedContentResponseDto,
+  FeaturedTranslatedContentRequestDto,
+  TranslationRequestDto,
+} from 'libs/dto/src';
 import { QueryBus } from '@nestjs/cqrs';
 import { GetFeaturedContentQuery } from '../application/get-featured-content.query';
 import {
@@ -39,7 +39,7 @@ export class FeaturedContentController {
 
   @EventPattern(FEATURED_CONTENT_REQ_EVENT)
   async featuredContentProcessRequest(
-    @Payload() payload: FeaturedContentRequest,
+    @Payload() payload: FeaturedContentRequestDto,
   ) {
     this.apiGatewayMicroserviceClient.emit(
       FEATURED_CONTENT_UPDATE_PROCESS_STATUS_EVENT,
@@ -48,7 +48,7 @@ export class FeaturedContentController {
 
     const response = await this.queryBus.execute<
       GetFeaturedContentQuery,
-      FeaturedContentResponse[]
+      FeaturedContentResponseDto[]
     >(new GetFeaturedContentQuery(payload));
 
     this.apiGatewayMicroserviceClient.emit(
@@ -59,7 +59,7 @@ export class FeaturedContentController {
 
   @EventPattern(FEATURED_CONTENT_TRANSLATION_REQ_EVENT)
   async featuredContentSendTranslatedContentRequest(
-    @Payload() payload: FeaturedTranslatedContentRequest,
+    @Payload() payload: FeaturedTranslatedContentRequestDto,
   ) {
     this.apiGatewayMicroserviceClient.emit(
       FEATURED_CONTENT_UPDATE_PROCESS_STATUS_EVENT,
@@ -68,7 +68,7 @@ export class FeaturedContentController {
 
     const featuredContentList = await this.queryBus.execute<
       GetFeaturedContentQuery,
-      FeaturedContentResponse[]
+      FeaturedContentResponseDto[]
     >(
       new GetFeaturedContentQuery({
         language: payload.languageSource,
@@ -86,12 +86,12 @@ export class FeaturedContentController {
 
     this.translationMicroserviceClient.emit(
       TRANSLATION_REQ_EVENT,
-      new TranslationRequest(featuredContentList, payload.languageTarget),
+      new TranslationRequestDto(featuredContentList, payload.languageTarget),
     );
   }
 
   @EventPattern(TRANSLATION_RES_EVENT)
-  async translationResponse(@Payload() payload: FeaturedContentResponse[]) {
+  async translationResponse(@Payload() payload: FeaturedContentResponseDto[]) {
     this.apiGatewayMicroserviceClient.emit(FEATURED_CONTENT_RES_EVENT, payload);
   }
 }

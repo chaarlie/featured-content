@@ -3,7 +3,7 @@ import { ClientRMQ } from '@nestjs/microservices';
 import {
   FeaturedContentRequest,
   FeaturedTranslatedContentRequest,
-} from '@app/payload';
+} from 'libs/dto/src';
 import {
   FEATURED_CONTENT_MICROSERVICE_CLIENT,
   FEATURED_CONTENT_REQ_EVENT,

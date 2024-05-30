@@ -3,7 +3,7 @@ import axios from 'axios';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 
 import { GetJsonTranslatedQuery } from './get-json-translated.query';
-import { FeaturedContentResponse } from '@app/payload';
+import { FeaturedContentResponseDto } from 'libs/dto/src';
 import { RedisClientManagerService } from '@app/redis-client-manager';
 
 @QueryHandler(GetJsonTranslatedQuery)
@@ -89,7 +89,7 @@ export class GetJsonTranslatedQueryHandler implements IQueryHandler {
     );
 
     const contentTranslationListStringified = contentTranslationList.map(
-      (el) => el as FeaturedContentResponse,
+      (el) => el as FeaturedContentResponseDto,
     );
 
     return contentTranslationListStringified;
@@ -97,8 +97,8 @@ export class GetJsonTranslatedQueryHandler implements IQueryHandler {
 
   async execute(
     query: GetJsonTranslatedQuery,
-  ): Promise<FeaturedContentResponse[]> {
-    let contentList: FeaturedContentResponse[] = [];
+  ): Promise<FeaturedContentResponseDto[]> {
+    let contentList: FeaturedContentResponseDto[] = [];
 
     const cacheKey = this.redisClientManagerService.generateCacheKey(query);
     const cacheData =
@@ -111,7 +111,7 @@ export class GetJsonTranslatedQueryHandler implements IQueryHandler {
         console.error(error);
       }
 
-      return contentList as FeaturedContentResponse[];
+      return contentList as FeaturedContentResponseDto[];
     }
 
     contentList = await this.getTranslatedContentList(query);
