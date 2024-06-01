@@ -2,41 +2,37 @@ import {
   FormEvent,
   Suspense,
   lazy,
+  useContext,
   useEffect,
   useMemo,
   useState,
 } from "react";
 import { ContentLang, FeaturedContent } from "../../types";
 import axios from "axios";
-import FeaturedContentDateSelection from "./FeaturedContentDateSelection";
+
 import moment from "moment";
 import { useLoadedImages } from "../../hooks/useLoadedImages";
 import { useEventSource } from "../../hooks/useEventSource";
 import Loader from "../loader/Loader";
+import {
+  ContentSelectionContext,
+  ContentSelectionContextProps,
+} from "../../context/ContentSelectionContext";
 
 const FeaturedContentListDisplay = lazy(
   () => import("./FeaturedContentListDisplay")
 );
 
-const countryFlags = [
+const countryFlags: ContentLang[] = [
   { key: "en", url: "https://flagsapi.com/US/flat/64.png" },
   { key: "es", url: "https://flagsapi.com/ES/flat/64.png" },
   { key: "de", url: "https://flagsapi.com/DE/flat/64.png" },
 ];
 
-interface FeaturedContentContainerProps {
-  itemQty: number;
-  setItemQty: (value: number) => void;
-  currentDate: any;
-  setCurrentDate: (value: any) => void;
-}
+function FeaturedContentContainer() {
+  const { itemQty, setItemQty, currentDate, setCurrentDate } =
+    useContext<ContentSelectionContextProps>(ContentSelectionContext);
 
-function FeaturedContentContainer({
-  itemQty,
-  setItemQty,
-  currentDate,
-  setCurrentDate,
-}: FeaturedContentContainerProps) {
   const [featuredContentList, setFeaturedContentList] = useState<
     FeaturedContent[]
   >([]);
@@ -123,14 +119,23 @@ function FeaturedContentContainer({
 
   const shouldDisplayContentList =
     hasLoadedContentImages && featuredContentList.length > 0;
-
+  const inputFormattedDate = moment(currentDate).format("YYYY-MM-DD");
   return (
     <section className="bg-primary-2 drop-shadow-lg  col-span-2 grid grid-rows-6 p-10 h-[calc(100%-3rem)]">
       {hasLoadedFlagImages ? (
         <div className="row-start-1 row-end-2">
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-2 grid-flow-row bg-shade-2 p-5 rounded ">
-              <FeaturedContentDateSelection setCurrentDate={setCurrentDate} />
+              <div className="col-span-1 row-span-1 flex   items-center ">
+                <div className="border-r-1">
+                  <input
+                    value={inputFormattedDate}
+                    onChange={(e) => setCurrentDate(e.target.value)}
+                    className="outline inline-block outline-offset-2 p-2 outline-shade-3 rounded text-lg font-bold uppercase"
+                    type="date"
+                  />
+                </div>
+              </div>
 
               <div className="rounded flex bg-shade-1 round">
                 <div className="grid grid-cols-5 w-11/12">

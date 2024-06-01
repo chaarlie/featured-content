@@ -1,16 +1,16 @@
-
 import "./App.css";
-import DateSideBar from "./components/date-sidebar/DateSideBar";
-import FeaturedContentContainer from "./components/featured-content/FeaturedContentContainer";
 import Home from "./components/home/Home";
+import { ContentSelectionContextProvider } from "./context/ContentSelectionContext";
 
 function App() {
   return (
-    <main className="bg-accent-2">
-      <div className="h-screen overflow-y-hidden">
-     <Home />
-      </div>
-    </main>
+    <ContentSelectionContextProvider>
+      <main className="bg-accent-2">
+        <div className="h-screen overflow-y-hidden">
+          <Home />
+        </div>
+      </main>
+    </ContentSelectionContextProvider>
   );
 }
 
