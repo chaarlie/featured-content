@@ -13,11 +13,12 @@ import axios from "axios";
 import moment from "moment";
 import { useLoadedImages } from "../../hooks/useLoadedImages";
 import { useEventSource } from "../../hooks/useEventSource";
-import Loader from "../loader/Loader";
 import {
   ContentSelectionContext,
   ContentSelectionContextProps,
 } from "../../context/ContentSelectionContext";
+import FeaturedContentLoadingCard from "./FeaturedContentLoadingCard";
+import FeaturedContentLoading from "./FeaturedContentLoading";
 
 const FeaturedContentListDisplay = lazy(
   () => import("./FeaturedContentListDisplay")
@@ -120,6 +121,9 @@ function FeaturedContentContainer() {
   const shouldDisplayContentList =
     hasLoadedContentImages && featuredContentList.length > 0;
   const inputFormattedDate = moment(currentDate).format("YYYY-MM-DD");
+  const loadingContentList = Array.from({ length: itemQty }).map((_el, i) => (
+    <FeaturedContentLoadingCard key={i} />
+  ));
   return (
     <section className="bg-primary-2 drop-shadow-lg  col-span-2 grid grid-rows-6 p-10 h-[calc(100%-3rem)]">
       {hasLoadedFlagImages ? (
@@ -205,7 +209,14 @@ function FeaturedContentContainer() {
       ) : null}
 
       {processStatusEventData ? (
-        <Suspense fallback={<Loader status={processStatusEventData} />}>
+        <Suspense
+          fallback={
+            <FeaturedContentLoading
+              processStatusEventData={processStatusEventData}
+              loadingContentList={loadingContentList}
+            />
+          }
+        >
           <FeaturedContentListDisplay
             shouldDisplayContentList={shouldDisplayContentList}
             featuredContentList={featuredContentList}
