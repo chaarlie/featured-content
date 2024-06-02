@@ -4,7 +4,7 @@ import {
   lazy,
   useContext,
   useEffect,
-  useMemo,
+  useRef,
   useState,
 } from "react";
 import { ContentLang, FeaturedContent } from "../../types";
@@ -38,6 +38,8 @@ function FeaturedContentContainer() {
     FeaturedContent[]
   >([]);
 
+  const currentDateRef = useRef(null);
+
   const [contentImages, setContentImages] = useState<string[]>([]);
   const [formattedDate, setFormattedDate] = useState<string>();
 
@@ -46,7 +48,7 @@ function FeaturedContentContainer() {
   const { hasLoadedImages: hasLoadedContentImages } =
     useLoadedImages(contentImages);
   const { hasLoadedImages: hasLoadedFlagImages } = useLoadedImages(
-    useMemo(() => countryFlags.map(({ url }) => url), [countryFlags])
+    countryFlags.map(({ url }) => url)
   );
 
   const shouldSubmitForm = formattedDate && currentFlag && itemQty > 0;
@@ -118,9 +120,18 @@ function FeaturedContentContainer() {
     }
   }, [featuredContentEventData]);
 
+  useEffect(() => {
+    if (currentDateRef.current) {
+      const current: HTMLInputElement = currentDateRef.current;
+      current.value = moment(new Date()).format("YYYY-MM-DD");
+
+      const event = new Event("change", { bubbles: true });
+      current.dispatchEvent(event);
+    }
+  }, [currentDateRef, hasLoadedFlagImages]);
+
   const shouldDisplayContentList =
     hasLoadedContentImages && featuredContentList.length > 0;
-  const inputFormattedDate = moment(currentDate).format("YYYY-MM-DD");
   const loadingContentList = Array.from({ length: itemQty }).map((_el, i) => (
     <FeaturedContentLoadingCard key={i} />
   ));
@@ -133,7 +144,7 @@ function FeaturedContentContainer() {
               <div className="col-span-1 row-span-1 flex   items-center ">
                 <div className="border-r-1">
                   <input
-                    value={inputFormattedDate}
+                    ref={currentDateRef}
                     onChange={(e) => setCurrentDate(e.target.value)}
                     className="outline inline-block outline-offset-2 p-2 outline-shade-3 rounded text-lg font-bold uppercase"
                     type="date"
@@ -160,7 +171,10 @@ function FeaturedContentContainer() {
 
                 <div className="flex justify-center items-center w-5 p-2">
                   <div className="grid grid-rows-3  text-accent-1 ">
-                    <div className="cursor-pointer hover:scale-[1.2]  active:translate-y-[1px]" onClick={pickNextFlag}>
+                    <div
+                      className="cursor-pointer hover:scale-[1.2]  active:translate-y-[1px]"
+                      onClick={pickNextFlag}
+                    >
                       {" "}
                       &#8593;
                     </div>
