@@ -30,10 +30,10 @@
       "@app/rmq-env-config/*": [
         "libs/rmq-env-config/src/*"
       ],
-      "@app/payload": [
+      "@app/dto": [
         "libs/dto/src"
       ],
-      "@app/payload/*": [
+      "@app/dto/*": [
         "libs/dto/src/*"
       ],
       "@app/token": [

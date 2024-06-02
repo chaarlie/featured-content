@@ -1,9 +1,9 @@
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { ClientRMQ } from '@nestjs/microservices';
 import {
-  FeaturedContentRequest,
-  FeaturedTranslatedContentRequest,
-} from 'libs/dto/src';
+  FeaturedContentRequestDto,
+  FeaturedTranslatedContentRequestDto,
+} from '@app/dto';
 import {
   FEATURED_CONTENT_MICROSERVICE_CLIENT,
   FEATURED_CONTENT_REQ_EVENT,
@@ -18,7 +18,7 @@ export class FeaturedContentService {
   ) {}
 
   featuredContentSendContentRequest(
-    featuredContentRequest: FeaturedContentRequest,
+    featuredContentRequest: FeaturedContentRequestDto,
   ) {
     this.featuredContentMicroserviceClient.emit(
       FEATURED_CONTENT_REQ_EVENT,
@@ -27,7 +27,7 @@ export class FeaturedContentService {
   }
 
   featuredContentSendTranslatedContentRequest(
-    featuredContentRequest: FeaturedTranslatedContentRequest,
+    featuredContentRequest: FeaturedTranslatedContentRequestDto,
   ) {
     this.featuredContentMicroserviceClient.emit(
       FEATURED_CONTENT_TRANSLATION_REQ_EVENT,
