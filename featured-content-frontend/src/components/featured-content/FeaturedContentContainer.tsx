@@ -160,12 +160,12 @@ function FeaturedContentContainer() {
 
                 <div className="flex justify-center items-center w-5 p-2">
                   <div className="grid grid-rows-3  text-accent-1 ">
-                    <div className="cursor-pointer" onClick={pickNextFlag}>
+                    <div className="cursor-pointer hover:scale-[1.2]  active:translate-y-[1px]" onClick={pickNextFlag}>
                       {" "}
                       &#8593;
                     </div>
                     <div
-                      className="row-start-3 cursor-pointer"
+                      className="row-start-3 cursor-pointer  hover:scale-[1.2]  active:translate-y-[1px]"
                       onClick={pickPreviousFlag}
                     >
                       {" "}
