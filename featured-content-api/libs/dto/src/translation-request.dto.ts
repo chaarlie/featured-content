@@ -1,6 +1,6 @@
 import { FeaturedContentResponseDto } from './featured-content-response.dto';
 
-export class TranslationRequestDto{
+export class TranslationRequestDto {
   constructor(
     public featuredContentList: FeaturedContentResponseDto[],
     public languageTarget: string,

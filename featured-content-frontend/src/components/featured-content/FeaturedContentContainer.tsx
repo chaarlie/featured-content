@@ -31,8 +31,14 @@ const countryFlags: ContentLang[] = [
 ];
 
 function FeaturedContentContainer() {
-  const { itemQty, setItemQty, currentDate, setCurrentDate } =
-    useContext<ContentSelectionContextProps>(ContentSelectionContext);
+  const {
+    itemQty,
+    setItemQty,
+    currentDate,
+    setCurrentDate,
+    currentContentIdx,
+    setCurrentContentIdx,
+  } = useContext<ContentSelectionContextProps>(ContentSelectionContext);
 
   const [featuredContentList, setFeaturedContentList] = useState<
     FeaturedContent[]
@@ -44,20 +50,22 @@ function FeaturedContentContainer() {
   const [formattedDate, setFormattedDate] = useState<string>();
 
   const [currentFlag, setCurrentFlag] = useState<ContentLang>(countryFlags[0]);
-  const [_flagIndex, setFlagIndex] = useState<number>(1);
+  const setFlagIndex = useState<number>(1)[1];
   const { hasLoadedImages: hasLoadedContentImages } =
     useLoadedImages(contentImages);
   const { hasLoadedImages: hasLoadedFlagImages } = useLoadedImages(
     countryFlags.map(({ url }) => url)
   );
 
-  const shouldSubmitForm = formattedDate && currentFlag && itemQty > 0;
+  const [shouldFetchNextDay, setShouldFetchNextDay] = useState<boolean>(false);
 
   const { data: featuredContentEventData } =
     useEventSource<FeaturedContent>("featured-content");
 
   const { data: processStatusEventData } =
     useEventSource<string>("process-status");
+
+  const shouldSubmitForm = formattedDate && currentFlag && itemQty > 0;
 
   function pickNextFlag() {
     pickFlag(1);
@@ -81,7 +89,28 @@ function FeaturedContentContainer() {
     });
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function updateInputDate(date: Date) {
+    const current: HTMLInputElement =
+      currentDateRef.current as unknown as HTMLInputElement;
+    if (current) {
+      current.value = moment(date).format("YYYY-MM-DD");
+
+      const event = new Event("change", { bubbles: true });
+      current.dispatchEvent(event);
+    }
+  }
+
+  function fetchContentCall(requestDate: string) {
+    const isLangEnglish = currentFlag?.key === "en";
+
+    const REQ_URL = isLangEnglish
+      ? `${process.env.REACT_APP_API_URL}/feed/en/${requestDate}?qty=${itemQty}`
+      : `${process.env.REACT_APP_API_URL}/feed/translate/en/${currentFlag.key}/${requestDate}?qty=${itemQty}`;
+
+    return axios.get<any[]>(REQ_URL);
+  }
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (shouldSubmitForm) {
@@ -89,26 +118,48 @@ function FeaturedContentContainer() {
         setFeaturedContentList([]);
       }
 
-      const isLangEnglish = currentFlag?.key === "en";
-
-      const REQ_URL = isLangEnglish
-        ? `${process.env.REACT_APP_API_URL}/feed/en/${formattedDate}?qty=${itemQty}`
-        : `${process.env.REACT_APP_API_URL}/feed/translate/en/${currentFlag.key}/${formattedDate}?qty=${itemQty}`;
-
-      axios.get<any[]>(REQ_URL);
+      fetchContentCall(formattedDate);
     }
   }
+
+  useEffect(() => {
+    if (
+      featuredContentList.length > 0 &&
+      currentContentIdx >= featuredContentList.length
+    ) {
+      setShouldFetchNextDay(true);
+      setCurrentContentIdx(0);
+    }
+  }, [featuredContentList, currentContentIdx]);
+
+  useEffect(() => {
+    if (shouldFetchNextDay) {
+      const nextDay = moment(currentDate)
+        .add(itemQty, "days")
+        .format("YYYY/MM/DD");
+
+      fetchContentCall(nextDay);
+
+      updateInputDate(new Date(nextDay));
+
+      setCurrentDate(new Date(nextDay));
+    }
+  }, [shouldFetchNextDay]);
 
   useEffect(() => {
     const date: any = new Date(currentDate);
 
     if (date != "Invalid Date") {
-      const newDateStr = moment(date).format("YYYY/MM/DD");
+      const newDateStr = moment(date).add(1, "days").format("YYYY/MM/DD");
       setFormattedDate(newDateStr);
     }
   }, [currentDate]);
 
   useEffect(() => {
+    if (shouldFetchNextDay) {
+      setShouldFetchNextDay(false);
+    }
+
     if (featuredContentEventData && Array.isArray(featuredContentEventData)) {
       const thumbnails = featuredContentEventData.map(
         ({ featuredArticle }) => featuredArticle?.thumbnail!!
@@ -122,11 +173,7 @@ function FeaturedContentContainer() {
 
   useEffect(() => {
     if (currentDateRef.current) {
-      const current: HTMLInputElement = currentDateRef.current;
-      current.value = moment(new Date()).format("YYYY-MM-DD");
-
-      const event = new Event("change", { bubbles: true });
-      current.dispatchEvent(event);
+      updateInputDate(new Date());
     }
   }, [currentDateRef, hasLoadedFlagImages]);
 

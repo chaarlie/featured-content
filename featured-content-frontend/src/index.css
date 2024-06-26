@@ -27,13 +27,11 @@ li.current-date-custom-list-item {
   margin-bottom: 5px;
 }
 li.current-date-custom-list-item:before {
-  
-  margin-right: 10px;
   content: counter(item);
   background: var(--shade-2);
   border-radius: 100%;
   color: var(--accent-1);
-  width: 1.6em;
+  width: 2.3em;
   text-align: center;
   display: inline-block;
 }

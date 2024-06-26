@@ -12,7 +12,7 @@ function CurrentDateContainer() {
   );
 
   const displayDates = Array.from({ length: itemQty }).map((_date, i) => {
-    return moment(currentDate).utc().format("MM/DD/YYYY");
+    return moment(currentDate).add(i, 'days').utc().format("MM/DD/YYYY");
   });
 
   return (

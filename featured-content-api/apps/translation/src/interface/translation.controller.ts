@@ -18,7 +18,9 @@ export class TranslationController {
   ) {}
 
   @EventPattern(TRANSLATION_REQ_EVENT)
-  async translationJsonContentRequest(@Payload() payload: TranslationRequestDto) {
+  async translationJsonContentRequest(
+    @Payload() payload: TranslationRequestDto,
+  ) {
     const contentTranslationList = await this.queryBus.execute(
       new GetJsonTranslatedQuery({
         jsonObArray: payload.featuredContentList,
