@@ -5,8 +5,9 @@ This is sample API serving as a proxy for the Wikimedia Content Api.
 Key height lights:
 
 1. Implements CQRS in NestJS
-1. Implements Libretranslate API
-1. Promotes code reuse through lib modules
+1. Implements microservice architecture through monorepos 
+1. Implements design tokens in Tailwind
+1. Caching with Redis
 
 ## Instructions to RUN
 
