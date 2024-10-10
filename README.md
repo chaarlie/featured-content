@@ -1,8 +1,8 @@
 ## Hi there!
 
-This is sample API serving as a proxy for the Wikimedia Content Api.
+This is a sample API serving as a proxy for the Wikimedia Content API.
 
-Key height lights:
+Key highlights:
 
 1. Implements CQRS in NestJS
 1. Implements microservice architecture through monorepos 
